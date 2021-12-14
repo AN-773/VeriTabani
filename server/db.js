@@ -1,5 +1,5 @@
-const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const utils = require('./utils');
 const Pool = require('pg').Pool;
 const SALT = process.env.salt
 const pool = new Pool({
@@ -26,14 +26,6 @@ function getUserRooms(userId, callback) {
         [userId]).then(result => callback(result.rows)).catch(e => { throw e });
 };
 
-function generateRandomId(callback) {
-    crypto.randomBytes(9, async (err, buf) => {
-        if (err) {
-            throw err;
-        }
-        callback(buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-').replace(/\=/g, ''))
-    })
-}
 
 function createRoom(name, callback) {
     generateRandomId(str => {
