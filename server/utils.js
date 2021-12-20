@@ -2,10 +2,7 @@ const crypto = require('crypto');
 
 const isLoggedIn = (req, res, next) => {
     if (!req.session.userId) {
-        // res.sendStatus(401)
-        console.log("not logged in");
-        req.session.userId = 122
-        next()
+        res.sendStatus(401)
     } else {
         next()
     }
