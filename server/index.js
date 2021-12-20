@@ -1,6 +1,7 @@
 require('dotenv').config()
 const utils = require('./utils.js')
 const express = require('express')
+const bcrypt = require('bcrypt')
 const session = require('express-session')
 const Pool = require('pg').Pool;
 const pool = new Pool({
@@ -35,8 +36,8 @@ app.use(session({
     }
 }))
 
-app.get("/", utils.isLoggedIn, (req, res) => {
-    res.send('Hi')
+app.get("/", async (req, res) => {
+    res.send(await bcrypt.hash('123', await bcrypt.genSalt(10)))
 })
 
 //Friends
@@ -46,6 +47,6 @@ app.use("/rooms", roomsRoute)
 //Users
 app.use("/user", usersRoute)
 
-app.listen(port, () => {
+app.listen(port, "192.168.1.54", () => {
     console.log(`App running on port ${port}.`)
 })

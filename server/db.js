@@ -13,7 +13,7 @@ const pool = new Pool({
 
 const getUserRooms = async (userId) => {
     return (await pool.query('SELECT ro.id, ro.name, ro.owner, ' +
-        '(EXTRACT(epoch FROM ro.last_active_time) * 1000)::BigInt as last_active_time ' +
+        'to_milli_sec(last_active_time) as last_active_time ' +
         'FROM public.rooms AS ro INNER JOIN public.user_rooms as urs ON ro.id = urs.room_id ' +
         'WHERE urs.user_id = $1 ORDER BY ro.last_active_time DESC', [userId])).rows
 }
@@ -23,7 +23,7 @@ const getRoomById = async (id) => (await pool.query("SELECT * FROM public.rooms 
 const removeRoom = async (id) => await pool.query("DELETE FROM public.rooms WHERE id = $1", [id])
 
 const createRoom = async (name, owner, room_id) => {
-    pool.query("CALL public.create_group($1, $2, $3)", [owner, room_id, name])
+    pool.query("CALL public.create_group($1, $2, $3)", [room_id, name, owner])
 }
 
 const updateRoomName = async (roomId, newName) =>
@@ -56,7 +56,6 @@ const removeMessage = async (id) => {
 }
 
 //Follows
-
 const addFriendRequest = async (sender, receiver) =>
     await pool.query("INSERT INTO public.follow_req (sender, receiver) " +
         "VALUES ($1, $2)", [sender, receiver])
@@ -88,8 +87,8 @@ const isFriend = async (userId, friendId) =>
 
 const acceptFriendRequest = async (reqId) =>
     pool.query("CALL accept_follow_req($1)", [reqId])
-//Users
 
+//Users
 const addUser = async (user) =>
     (await pool.query('SELECT public.add_user($1, $2, $3, $4, $5)',
         [user.email, user.name,

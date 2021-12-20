@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:minWidth="200dp"
+    android:background="@drawable/bubble"
+    android:maxWidth="240dp">
+
+    <TextView
+        android:id="@+id/writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxWidth="120dp"
+        android:padding="4dp"
+        android:textColor="#01E1FF"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="This my name" />
+
+    <FrameLayout
+        android:id="@+id/replay_container"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:maxWidth="240dp"
+        android:orientation="horizontal"
+        android:paddingEnd="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/writer">
+
+        <TextView
+            android:id="@+id/replatText"
+            android:layout_width="230dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bubble_teal_900"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:maxHeight="64dp"
+            android:paddingStart="12dp"
+            android:textColor="#C5C5C5"
+            android:textSize="16sp"
+            tools:text="This is a replay From you friend Who k;dlaskd;" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bubble_teal_400" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/msgTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:gravity="center_vertical"
+        android:maxWidth="230dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/replay_container"
+        tools:text="This is jksald ksaljd kals jdksaljd ksal jdaksj dkalsj das jkda replay From you friend Who k;dlaskd;" />
+
+    <TextView
+        android:id="@+id/dateTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/msgTxt"
+        android:gravity="end|center_vertical"
+        android:textColor="#F4F4F4"
+        android:paddingEnd="8dp"
+        android:textSize="12sp"
+        android:paddingStart="8dp"
+        tools:text="16:21"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
