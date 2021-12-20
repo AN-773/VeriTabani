@@ -38,7 +38,7 @@ router.get("/search", utils.isLoggedIn, async (req, res) => {
     if (query && query.length > 0) {
         try {
             result = await db.searchUsers(query)
-            res.json(JSON.stringify(result))
+            res.json(result)
         } catch (err) {
             console.log(err);
             res.sendStatus(405)
@@ -52,6 +52,9 @@ router.post('/login', utils.isNotLoggedIn, async (req, res) => {
     const {
         email, password
     } = req.body
+    if ((!email || email.length == 0) || (!password || password.length == 0)) {
+        res.sendStatus(406)
+    }
     result = []
     try {
         result = await db.getUserByEmail(email)
@@ -59,10 +62,20 @@ router.post('/login', utils.isNotLoggedIn, async (req, res) => {
         console.log(err);
         res.status(405).send("Email not found")
     }
+    if (result.length == 0) {
+        res.status(405).send("Email not found: " + email)
+        return
+    }
     userPass = result[0].password
     if (await bcrypt.compare(password, userPass)) {
         req.session.userId = parseInt(result[0].id)
-        res.sendStatus(200)
+        user = {
+            id: parseInt(result[0].id),
+            username: result[0].username,
+            name: result[0].name,
+            lname: result[0].lname,
+        }
+        res.json(user)
     } else {
         res.status(401).send("Wrong password")
     }
@@ -81,7 +94,8 @@ router.post('/register', utils.isNotLoggedIn, async (req, res) => {
     try {
         result = await db.addUser(req.body)
         req.session.userId = parseInt(result)
-        res.sendStatus(200)
+        console.log(req.session.userId);
+        res.send({id: req.session.userId})
     } catch (err) {
         console.log(err);
         res.sendStatus(405)
